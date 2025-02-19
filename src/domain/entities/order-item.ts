@@ -1,42 +1,32 @@
-import { Price, OrderItemQuantity } from '@/domain/value-objects'
-import type { Product } from '@/domain/entities'
-
 export class OrderItem {
   private constructor(
-    private readonly product: Product,
-    private quantity: OrderItemQuantity,
-    private price: Price
+    readonly productId: string,
+    private quantity: number,
+    private price: number
   ) {}
 
-  static create(product: Product, quantity: number): OrderItem {
-    const total = quantity * product.getPrice()
-    return new OrderItem(product, new OrderItemQuantity(quantity), new Price(total))
+  static restore(productId: string, quantity: number, price: number): OrderItem {
+    const total = quantity * price
+    return new OrderItem(productId, quantity, total)
   }
 
-  static restore(product: Product, quantity: number): OrderItem {
-    const total = quantity * product.getPrice()
-    return new OrderItem(product, new OrderItemQuantity(quantity), new Price(total))
+  getProductId() {
+    return this.productId
   }
 
-  getProduct = () => this.product
-
-  getQuantity = () => this.quantity.getValue()
-
-  getPrice = () => this.price.getValue()
-
-  setQuantity = (quantity: number) => {
-    this.quantity = new OrderItemQuantity(quantity)
+  getQuantity() {
+    return this.quantity
   }
 
-  setPrice = (price: number) => {
-    this.price = new Price(price)
+  getPrice() {
+    return this.price
   }
 
   toJSON() {
     return {
-      product: this.product.toJSON(),
-      quantity: this.quantity.getValue(),
-      price: this.getPrice()
+      productId: this.productId,
+      quantity: this.quantity,
+      price: this.price
     }
   }
 }

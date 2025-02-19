@@ -43,7 +43,7 @@ export const orderRoutes = [
             items: {
               type: 'object',
               properties: {
-                productId: orderItemSchema.properties.product.properties.productId,
+                productId: orderItemSchema.properties.productId,
                 quantity: orderItemSchema.properties.quantity
               }
             }

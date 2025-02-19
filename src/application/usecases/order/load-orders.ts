@@ -5,6 +5,7 @@ export class LoadOrders {
   constructor(private readonly orderRepository: OrderRepository) {}
 
   async execute(): Promise<Order[]> {
-    return this.orderRepository.findAll()
+    const orders = await this.orderRepository.findAll()
+    return orders
   }
 }

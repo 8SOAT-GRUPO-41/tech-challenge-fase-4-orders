@@ -26,10 +26,10 @@ export class CreateOrder {
         if (!product) {
           throw new NotFoundError('Product not found')
         }
-        return OrderItem.create(product, quantity)
+        return OrderItem.restore(productId, quantity, product.getPrice())
       })
     )
-    const order = Order.create(customer, orderItems)
+    const order = Order.create(customerId, orderItems)
     await this.orderRepository.save(order)
     return order
   }

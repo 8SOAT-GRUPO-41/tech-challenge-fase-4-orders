@@ -7,6 +7,7 @@ export const orderSchema = {
     orderId: { type: 'string', format: 'uuid' },
     status: { type: 'string', examples: ['RECEIVED'] },
     total: { type: 'number', examples: [9] },
+    customerId: { type: 'string', format: 'uuid' },
     customer: customerSchema,
     orderItems: {
       type: 'array',
