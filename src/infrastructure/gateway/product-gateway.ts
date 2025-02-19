@@ -21,13 +21,20 @@ export class ProductGatewayMS implements ProductGateway {
   }
 
   async findById(id: string): Promise<Product | null> {
-    const response = await this.productServiceInstance.get<ProductQueryResult>(`/products/${id}`)
-    return Product.restore(
-      response.data.product_id,
-      response.data.name,
-      response.data.category,
-      +response.data.price,
-      response.data.description
-    )
+    try {
+      const response = await this.productServiceInstance.get<ProductQueryResult>(`/products/${id}`)
+      return Product.restore(
+        response.data.product_id,
+        response.data.name,
+        response.data.category,
+        +response.data.price,
+        response.data.description
+      )
+    } catch (error: any) {
+      if (error.response && error.response.status === 404) {
+        return null
+      }
+      throw error
+    }
   }
 }
