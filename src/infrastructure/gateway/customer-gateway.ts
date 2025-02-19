@@ -19,7 +19,7 @@ export class CustomerGatewayMS implements CustomerGateway {
   }
 
   async findById(id: string): Promise<Customer | null> {
-    const response = await this.customerServiceInstance.get<CustomerQueryResult>('/customers/44204681816')
-    return Customer.restore(response.data.customer_id, response.data.name, response.data.cpf, response.data.email)
+    const response = await this.customerServiceInstance.get<CustomerQueryResult>(`/customers/${id}`)
+    return Customer.restore(response.data.customer_id, response.data.cpf, response.data.name, response.data.email)
   }
 }
