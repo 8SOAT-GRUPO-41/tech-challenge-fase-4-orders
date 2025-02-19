@@ -2,7 +2,7 @@ import fastify, { type FastifyInstance } from 'fastify'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUI from '@fastify/swagger-ui'
 import swaggerConfig from '@/infrastructure/swagger/swagger-config'
-import { customerRoutes, orderRoutes, paymentRoutes, productRoutes } from '@/infrastructure/http/routes'
+import { orderRoutes } from '@/infrastructure/http/routes'
 import type { HttpServer } from '@/infrastructure/http/interfaces'
 import { adaptFastifyRoute } from './adapter'
 
@@ -24,7 +24,7 @@ export class FastifyHttpServer implements HttpServer {
   }
 
   private async buildRoutes(): Promise<void> {
-    const routes = [...customerRoutes, ...paymentRoutes, ...orderRoutes, ...productRoutes]
+    const routes = [...orderRoutes]
     for (const route of routes) {
       this.server[route.method](route.url, { schema: route.schema }, adaptFastifyRoute(route.handler()))
     }

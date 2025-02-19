@@ -4,10 +4,10 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: lanchonete
+      POSTGRES_DB: orders
     ports:
       - "5432:5432"
-    container_name: fiap-tech-challenge-fase-1-db
+    container_name: fiap-tech-challenge-fase-4-orders-db
     volumes:
       - ./migrations/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
@@ -22,13 +22,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: fiap-tech-challenge-fase-1-api
+    container_name: fiap-tech-challenge-fase-4-orders
     ports:
       - "3000:3000"
     environment:
       - DB_USER=postgres
       - DB_PASSWORD=postgres
-      - DB_NAME=lanchonete
+      - DB_NAME=orders
       - DB_HOST=db
       - DB_PORT=5432
       - PORT=3000

@@ -5,5 +5,4 @@ export interface OrderRepository {
   findAll(): Promise<Order[]>
   findById(orderId: string): Promise<Order | null>
   update(order: Order): Promise<void>
-  updateOrderStatus(order: Order): Promise<void>
 }

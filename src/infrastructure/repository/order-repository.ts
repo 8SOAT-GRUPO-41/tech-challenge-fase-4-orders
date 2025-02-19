@@ -118,13 +118,6 @@ export class OrderRepositoryDatabase implements OrderRepository {
     await this.databaseConnection.query(updateOrderSql, updateOrderParams)
   }
 
-  async updateOrderStatus(order: Order): Promise<void> {
-    const sql = 'UPDATE orders SET status = $1 WHERE order_id = $2'
-    const params = [order.getStatus(), order.orderId]
-
-    await this.databaseConnection.query(sql, params)
-  }
-
   async findById(orderId: string): Promise<Order | null> {
     const sql = `
       SELECT
