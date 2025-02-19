@@ -13,7 +13,7 @@ import { orderItemSchema } from '@/infrastructure/swagger/schemas/order-item'
 export const orderRoutes = [
   {
     method: 'get',
-    url: '/orders',
+    url: '/',
     handler: makeLoadOrdersController,
     schema: {
       tags: ['Orders'],
@@ -29,7 +29,7 @@ export const orderRoutes = [
   },
   {
     method: 'post',
-    url: '/orders',
+    url: '/',
     handler: makeCreateOrderController,
     schema: {
       tags: ['Orders'],
@@ -62,7 +62,7 @@ export const orderRoutes = [
   {
     method: 'get',
     handler: makeLoadOrderByIdController,
-    url: '/orders/:orderId',
+    url: '/:orderId',
     schema: {
       tags: ['Orders'],
       summary: 'Get an order by id',
