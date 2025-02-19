@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lanchonete-orders-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: lanchonete-orders-api
+  template:
+    metadata:
+      labels:
+        app: lanchonete-orders-api
+    spec:
+      containers:
+        - name: lanchonete-orders-api
+          image: {{ .Values.api.image.repository }}:{{ .Values.api.image.tag }}
+          ports:
+            - containerPort: {{ .Values.api.service.port }}
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+          env:
+            - name: DB_USER
+              value: {{ .Values.api.env.DB_USER }}
+            - name: DB_PASSWORD
+              value: {{ .Values.api.env.DB_PASSWORD }}
+            - name: DB_NAME
+              value: {{ .Values.api.env.DB_NAME }}
+            - name: DB_HOST
+              value: {{ .Values.api.env.DB_HOST }}
+            - name: DB_PORT
+              value: "{{ .Values.api.env.DB_PORT }}"
+            - name: PORT
+              value: "{{ .Values.api.env.PORT }}"
+            - name: CUSTOMER_SERVICE_URL
+              value: {{ .Values.api.env.CUSTOMER_SERVICE_URL }}
+            - name: PRODUCT_SERVICE_URL
+              value: {{ .Values.api.env.PRODUCT_SERVICE_URL }}  
