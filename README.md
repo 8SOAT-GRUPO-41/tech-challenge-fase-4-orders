@@ -1,5 +1,9 @@
 # 8SOAT FIAP Tech Challenge | Grupo 41 | Orders MS
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=8SOAT-GRUPO-41_tech-challenge-fase-4-orders&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=8SOAT-GRUPO-41_tech-challenge-fase-4-orders)
+
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=8SOAT-GRUPO-41_tech-challenge-fase-4-orders&metric=coverage)](https://sonarcloud.io/summary/new_code?id=8SOAT-GRUPO-41_tech-challenge-fase-4-orders)
+
 ## Como Iniciar o Projeto Localmente
 
 Para iniciar o projeto localmente, siga os passos abaixo:
