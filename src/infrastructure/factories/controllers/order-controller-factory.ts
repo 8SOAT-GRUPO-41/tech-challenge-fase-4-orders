@@ -1,9 +1,15 @@
 import {
   CreateOrderController,
   LoadOrdersController,
-  LoadOrderByIdController
+  LoadOrderByIdController,
+  UpdateOrderStatusController
 } from '@/infrastructure/controllers/order-controller'
-import { makeLoadOrders, makeCreateOrder, makeLoadOrderById } from '@/infrastructure/factories/usecases/order'
+import {
+  makeLoadOrders,
+  makeCreateOrder,
+  makeLoadOrderById,
+  makeUpdateOrderStatus
+} from '@/infrastructure/factories/usecases/order'
 import type { Controller } from '@/infrastructure/controllers/interfaces'
 
 export const makeCreateOrderController = (): Controller => {
@@ -16,4 +22,8 @@ export const makeLoadOrdersController = (): Controller => {
 
 export const makeLoadOrderByIdController = (): Controller => {
   return new LoadOrderByIdController(makeLoadOrderById())
+}
+
+export const makeUpdateOrderStatusController = (): Controller => {
+  return new UpdateOrderStatusController(makeUpdateOrderStatus())
 }
