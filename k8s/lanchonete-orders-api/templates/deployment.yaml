@@ -37,4 +37,6 @@ spec:
             - name: CUSTOMER_SERVICE_URL
               value: {{ .Values.api.env.CUSTOMER_SERVICE_URL }}
             - name: PRODUCT_SERVICE_URL
-              value: {{ .Values.api.env.PRODUCT_SERVICE_URL }}  
+              value: {{ .Values.api.env.PRODUCT_SERVICE_URL }}
+            - name: ORDERS_SERVICE_URL
+              value: {{ .Values.api.env.ORDERS_SERVICE_URL }}
