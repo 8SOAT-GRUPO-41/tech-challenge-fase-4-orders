@@ -16,6 +16,7 @@ import {
   LoadOrders,
   LoadOrderById,
 } from "@/application/usecases/order";
+import type { HttpResponse } from "@/infrastructure/http/interfaces";
 
 describe("Order Controllers", () => {
   const mockOrder = {
@@ -28,21 +29,22 @@ describe("Order Controllers", () => {
   } as unknown as Order;
 
   describe("CreateOrderController", () => {
-    const mockOrderRepository = {} as OrderRepository;
-    const mockProductGateway = {} as ProductGateway;
-    const mockCustomerGateway = {} as CustomerGateway;
-    const createOrder = new CreateOrder(
-      mockOrderRepository,
-      mockProductGateway,
-      mockCustomerGateway
-    );
-    const mockExecute = jest
-      .spyOn(createOrder, "execute")
-      .mockResolvedValue(mockOrder);
-    const controller = new CreateOrderController(createOrder);
+    // Dado (Given)
+    describe("Given a valid order request", () => {
+      const mockOrderRepository = {} as OrderRepository;
+      const mockProductGateway = {} as ProductGateway;
+      const mockCustomerGateway = {} as CustomerGateway;
+      const createOrder = new CreateOrder(
+        mockOrderRepository,
+        mockProductGateway,
+        mockCustomerGateway
+      );
+      const mockExecute = jest
+        .spyOn(createOrder, "execute")
+        .mockResolvedValue(mockOrder);
+      const controller = new CreateOrderController(createOrder);
 
-    it("should return 201 on success", async () => {
-      const request = {
+      const validRequest = {
         body: {
           customerId: "any_customer_id",
           products: [{ productId: "any_product_id", quantity: 1 }],
@@ -51,11 +53,62 @@ describe("Order Controllers", () => {
         params: {},
       };
 
-      const response = await controller.handle(request);
+      // Quando (When)
+      describe("When creating a new order", () => {
+        let response: HttpResponse;
 
-      expect(response.statusCode).toBe(HttpStatusCode.CREATED);
-      expect(response.body).toEqual(mockOrder.toJSON());
-      expect(mockExecute).toHaveBeenCalledWith(request.body);
+        beforeEach(async () => {
+          response = await controller.handle(validRequest);
+        });
+
+        // Então (Then)
+        it("Then it should return status code 201 (Created)", () => {
+          expect(response.statusCode).toBe(HttpStatusCode.CREATED);
+        });
+
+        it("Then it should return the created order data", () => {
+          expect(response.body).toEqual(mockOrder.toJSON());
+        });
+
+        it("Then it should call create order use case with correct params", () => {
+          expect(mockExecute).toHaveBeenCalledWith(validRequest.body);
+        });
+      });
+    });
+
+    // Dado (Given)
+    describe("Given an invalid order request", () => {
+      const mockOrderRepository = {} as OrderRepository;
+      const mockProductGateway = {} as ProductGateway;
+      const mockCustomerGateway = {} as CustomerGateway;
+      const createOrder = new CreateOrder(
+        mockOrderRepository,
+        mockProductGateway,
+        mockCustomerGateway
+      );
+      const mockExecute = jest
+        .spyOn(createOrder, "execute")
+        .mockRejectedValue(new NotFoundError("Customer not found"));
+      const controller = new CreateOrderController(createOrder);
+
+      const invalidRequest = {
+        body: {
+          customerId: "invalid_customer_id",
+          products: [{ productId: "any_product_id", quantity: 1 }],
+        },
+        query: {},
+        params: {},
+      };
+
+      // Quando (When)
+      describe("When trying to create an order with invalid customer", () => {
+        // Então (Then)
+        it("Then it should throw NotFoundError", async () => {
+          await expect(controller.handle(invalidRequest)).rejects.toThrow(
+            new NotFoundError("Customer not found")
+          );
+        });
+      });
     });
   });
 
