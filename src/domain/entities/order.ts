@@ -69,7 +69,7 @@ export class Order {
     return transitions[this.status].includes(status)
   }
 
-  private transitionTo(status: OrderStatus) {
+  transitionTo(status: OrderStatus) {
     if (this.status === status) {
       throw new DomainError(`The order is already in the ${status} status`)
     }

@@ -1,7 +1,8 @@
-import type { CreateOrder, LoadOrderById, LoadOrders } from '@/application/usecases/order'
+import type { CreateOrder, LoadOrderById, LoadOrders, UpdateOrderStatus } from '@/application/usecases/order'
 import type { HttpRequest, HttpResponse } from '@/infrastructure/http/interfaces'
 import { HttpStatusCode } from '@/infrastructure/http/helper'
 import type { Controller } from '@/infrastructure/controllers/interfaces'
+import type { OrderStatus } from '@/domain/enums'
 
 interface CreateOrderInput {
   customerId: string
@@ -42,6 +43,33 @@ export class LoadOrderByIdController implements Controller {
     return {
       statusCode: HttpStatusCode.OK,
       body: result.toJSON()
+    }
+  }
+}
+
+export class UpdateOrderStatusController implements Controller {
+  constructor(private readonly updateOrderStatusUseCase: UpdateOrderStatus) {}
+
+  async handle(
+    request: HttpRequest<
+      { status: OrderStatus },
+      null,
+      {
+        orderId: string
+      }
+    >
+  ): Promise<HttpResponse> {
+    const status = request.body.status
+    const orderId = request.params.orderId
+    await this.updateOrderStatusUseCase.execute({
+      orderId,
+      status
+    })
+    return {
+      statusCode: HttpStatusCode.OK,
+      body: {
+        message: 'Order status updated successfully'
+      }
     }
   }
 }

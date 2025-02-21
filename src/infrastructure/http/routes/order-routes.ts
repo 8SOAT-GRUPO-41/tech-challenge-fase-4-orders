@@ -1,7 +1,8 @@
 import {
   makeLoadOrdersController,
   makeCreateOrderController,
-  makeLoadOrderByIdController
+  makeLoadOrderByIdController,
+  makeUpdateOrderStatusController
 } from '@/infrastructure/factories/controllers'
 import { errorResponseSchema } from '@/infrastructure/swagger/error-response-schema'
 import { ErrorCodes } from '@/domain/enums'
@@ -69,6 +70,35 @@ export const orderRoutes = [
       response: {
         200: orderSchema,
         404: errorResponseSchema(404, ErrorCodes.NOT_FOUND),
+        500: errorResponseSchema(500, ErrorCodes.INTERNAL_SERVER_ERROR)
+      }
+    }
+  },
+  {
+    method: 'put',
+    handler: makeUpdateOrderStatusController,
+    url: '/:orderId/status',
+    schema: {
+      tags: ['Orders'],
+      summary: 'Update order status',
+      body: {
+        type: 'object',
+        properties: {
+          status: orderSchema.properties.status
+        },
+        required: ['status']
+      },
+      response: {
+        200: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string'
+            }
+          }
+        },
+        404: errorResponseSchema(404, ErrorCodes.NOT_FOUND),
+        422: errorResponseSchema(422, ErrorCodes.UNPROCESSABLE_ENTITY),
         500: errorResponseSchema(500, ErrorCodes.INTERNAL_SERVER_ERROR)
       }
     }
